@@ -115,6 +115,16 @@ int main(){
     cout << "\033[38;2;0;120;255m          SEJA BEM VINDO AO JOGO DA VELHA!          \033[0m" << endl;
     cout << "\033[38;2;255;255;0m====================================================\033[0m" << endl << endl;
 
+                cout << "                      COLUNAS" << endl;
+                cout << "                     0   1   2" << endl;
+                cout << "                   -------------" << endl;
+                cout << "               L 0    |   |   |" << endl;
+                cout << "               I   -------------" << endl;
+                cout << "               N 1    |   |   |" << endl;
+                cout << "               H   -------------" << endl;
+                cout << "               A 2    |   |   |" << endl;
+                cout << "                   -------------" << endl << endl;
+
                 cout << "Player 1 - Digite o simbolo que deseja utilizar: ";
                 cin >> p1;
                 cout << "Player 2 - Digite o simbolo que deseja utilizar: ";
@@ -138,12 +148,6 @@ int main(){
                 cout << "Player 1 escolheu '" << p1 << "'." << endl;
                 cout << "Player 2 escolheu '" << p2 << "'." << endl;
 
-                cout << endl;
-                cout << "  " << "  | " << "   | " << endl;
-                cout << " ---+----+---" << endl;
-                cout << "  " << "  | " << "   | " << endl;
-                cout << " ---+----+---" << endl;
-                cout << "  " << "  | " << "   | " << endl;
 
                 for (int i = 1; i <= n; i++){
 
