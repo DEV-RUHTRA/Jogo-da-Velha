@@ -10,6 +10,5 @@ int main()
     cout << " ---+----+---" << endl;
     cout << "  " <<n7<< " | " <<n8<< "  | " <<n9 << endl;
 
-    // EXECUTA AI
     return 0;
 }
