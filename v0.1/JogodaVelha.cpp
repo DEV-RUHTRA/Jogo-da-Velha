@@ -149,7 +149,7 @@ int main(){
                 cout << "Player 2 escolheu '" << p2 << "'." << endl;
 
 
-                for (int i = 1; i <= n; i++){
+                for (int i = 1; i <= n; i++){ //Esse for define a quantidade de jogadas e os turnos de cada jogador.
 
                     if (i % 2 != 0){ // Numero impar, player 1 joga.
                     cout << endl; // Espaço
@@ -253,24 +253,24 @@ int main(){
                 }
                 break;
             }
-            case 3: {
-  
 
-    cout << "Projeto desenvolvido por \033[38;2;255;0;0mDiego Gilberto Marques\033[0m e \033[38;2;255;0;0mArthur do Nascimento Rodrigues\033[0m." << endl;
+            case 3:{
+                cout << "Projeto desenvolvido por \033[38;2;255;0;0mDiego Gilberto Marques\033[0m e \033[38;2;255;0;0mArthur do Nascimento Rodrigues\033[0m." << endl;
 
-    cout << "Para voltar ao menu inicial, digite 9: ";
-    cin >> opc;
-    while (opc != 9) {
-        cout << "Opcao invalida! Pressione 9 para voltar ao menu inicial: ";
-        cin >> opc;
-    }
-    break;
-}
+                cout << "Para voltar ao menu inicial, digite 9: ";
+                cin >> opc;
+                while (opc != 9) {
+                    cout << "Opcao invalida! Pressione 9 para voltar ao menu inicial: ";
+                    cin >> opc;
+                }
+                break;
+            }
 
             case 4:{
                 cout << "Saindo do jogo... Ate logo!" << endl;
                 break;
             }
+
             default:
                 cout << "Opção invalida!" << endl;
         }
