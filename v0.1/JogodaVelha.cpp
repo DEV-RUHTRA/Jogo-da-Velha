@@ -177,6 +177,7 @@ int main(){
                             (n1 == p1 && n4 == p1 && n7 == p1) ||
                             (n2 == p1 && n5 == p1 && n8 == p1) ||
                             (n3 == p1 && n6 == p1 && n9 == p1)){
+                            cout << endl;
                             cout << "Player 1 venceu. Parabens!" << endl;
                             return 0;
                         }
@@ -205,6 +206,7 @@ int main(){
                             (n1 == p2 && n4 == p2 && n7 == p2) ||
                             (n2 == p2 && n5 == p2 && n8 == p2) ||
                             (n3 == p2 && n6 == p2 && n9 == p2)){
+                            cout << endl;
                             cout << "Player 2 venceu. Parabens!" << endl;
                             return 0;
                         }
@@ -272,7 +274,7 @@ int main(){
             }
 
             default:
-                cout << "Opção invalida!" << endl;
+                cout << "Opcao invalida!" << endl;
         }
 
     }while(opc != 4);
