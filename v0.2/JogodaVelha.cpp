@@ -1,32 +1,41 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define MAX 100
-// s1 = simbolo 1, s2 = simbolo2
+#define MAX 100 //Define o tamanho maximo do nome da cada jogador
 
+void tabuleiro(){
+                cout << "                      COLUNA" << endl;
+            cout << "                     0   1   2" << endl;
+            cout << "                   -------------" << endl;
+            cout << "               L 0    |   |   |" << endl;
+            cout << "               I   -------------" << endl;
+            cout << "               N 1    |   |   |" << endl;
+            cout << "               H   -------------" << endl;
+            cout << "               A 2    |   |   |" << endl;
+            cout << "                   -------------" << endl
+                 << endl;
+}
 void escolhaSimbolo(char &s1, char &s2){
 
     cout << "Jogador escolha seu simbolo ('X' ou 'O'): ";
     cin >> s1;
-    while (s1 != 'X' && s1 != 'O')
-    {
+    while (s1 != 'X' && s1 != 'O'){
         cout << "Simbolo invalido." << endl;
         cout << "Jogador escolha seu simbolo novamente('X' ou 'O'): ";
         cin >> s1;
     }
-
+    cout << endl;
     cout << "Simbolo '" << s1 << "' escolhido pelo jogador!" << endl;
-    if (s1 == 'X')
-    {
+    if (s1 == 'X'){
         s2 = 'O';
     }
-    else
-    {
+    else{
         s2 = 'X';
     }
-    cout << "Simbolo '" << s2 << "' automaticamento escolhido para o oponente!" << endl;
+    cout << "Simbolo '" << s2 << "' escolhido automaticamente para o oponente!" << endl;
+
 }
 void escolhaNome(char nome1[MAX], char nome2[MAX]){
-    
+    cout << endl;
     cout << "Jogador digite seu nickname: ";
     cin.ignore();
     cin.getline(nome1,MAX);
@@ -35,7 +44,7 @@ void escolhaNome(char nome1[MAX], char nome2[MAX]){
     
 }
 void escolhePosicao(int &linha,int &coluna, char nome[]){
-    char posicao[6];
+    char posicao[6]; //Uma posicao a mais por conta do '\0'
     cout << nome << ", selecione sua posicao (linha,coluna): ";
 
     while (true) {
@@ -47,8 +56,8 @@ void escolhePosicao(int &linha,int &coluna, char nome[]){
             posicao[1] >= '0' && posicao[1] <= '2' &&
             posicao[3] >= '0' && posicao[3] <= '2') {
 
-            linha = posicao[1] - '0';   // converte char para int
-            coluna = posicao[3] - '0';
+            linha = posicao[1] - '0';// converte char para int
+            coluna = posicao[3] - '0';// converte char para int
             break;
         }else{
             cout << "Posicao invalida! Digite novamente (linha,coluna): ";
@@ -56,11 +65,11 @@ void escolhePosicao(int &linha,int &coluna, char nome[]){
     }
 }
 void imprimeTabuleiro(char tabuleiro[3][3],int linha, int coluna, int simb, char nome[]){
-    while(tabuleiro[linha][coluna] != simb && tabuleiro[linha][coluna] != '-'){
+    while(tabuleiro[linha][coluna] != '-'){ 
         cout << "Posicao invalida!" << endl;
         escolhePosicao(linha,coluna,nome);
     }
-    tabuleiro[linha][coluna] = simb;
+    tabuleiro[linha][coluna] = simb; //while que verifica.
     
     cout << "  " <<tabuleiro[0][0]<< " | " <<tabuleiro[0][1]<< "  | " <<tabuleiro[0][2]<< endl;
     cout << " ---+----+---" << endl;
@@ -95,14 +104,14 @@ int main(){
         // Opções do menu
         cout << "\033[38;2;0;120;255m1 - Jogador vs Oponente\033[0m" << endl;
         cout << "\033[38;2;0;120;255m2 - Jogador vs Bot\033[0m" << endl;
-        cout << "\033[38;2;0;120;255m4 - Creditos\033[0m" << endl;
-        cout << "\033[38;2;0;120;255m5 - Sair\033[0m" << endl;
+        cout << "\033[38;2;0;120;255m3 - Creditos\033[0m" << endl;
+        cout << "\033[38;2;0;120;255m4 - Sair\033[0m" << endl;
 
         cout << "Escolha uma opcao: ";
         cin >> opc;
         cout << "                      V0.2" << endl;
 
-        while (opc != 1 && opc != 2 && opc != 3 && opc != 4){
+        while (opc < 1 || opc > 4){
             cout << "Opcao invalida! Digite novamente uma opcao: ";
             cin >> opc;
         }
@@ -111,8 +120,8 @@ int main(){
         
         case 1:{// Jogador vs Oponente
             
-            char s1, s2;
-            char nome1[MAX], nome2[MAX];
+            char s1, s2; // s1 = simbolo 1, s2 = simbolo2
+            char nome1[MAX], nome2[MAX]; //Nome do jogador e oponente respectivamente
 
             cout << endl;
             cout << "\033[38;2;255;255;0m====================================================\033[0m" << endl;
@@ -120,50 +129,37 @@ int main(){
             cout << "\033[38;2;255;255;0m====================================================\033[0m" << endl
                  << endl;
 
-            cout << "                      COLUNA" << endl;
-            cout << "                     0   1   2" << endl;
-            cout << "                   -------------" << endl;
-            cout << "               L 0    |   |   |" << endl;
-            cout << "               I   -------------" << endl;
-            cout << "               N 1    |   |   |" << endl;
-            cout << "               H   -------------" << endl;
-            cout << "               A 2    |   |   |" << endl;
-            cout << "                   -------------" << endl
-                 << endl;
-
+            tabuleiro();
             escolhaSimbolo(s1, s2);
             escolhaNome(nome1, nome2);
-            
-            int linha,coluna;
-            char tabuleiro[3][3] = {'-','-','-','-','-','-','-','-','-'};
+            tabuleiro();
+            int linha,coluna; //Declaração das variaveis que serão usadas como posição.
+            char tabuleiro[3][3] = {'-','-','-','-','-','-','-','-','-'}; //Inicilização do tabuleiro em uma matriz[3][3] com o char "-" em todos as posições.
 
-            for(int i=1;i<=9;i++){ //For que define a quantidade de jogadas.
+            for(int i=1;i<=9;i++){ //For que define a quantidade de jogadas e os turnos.
+
                 if(i%2 != 0){ //Define a vez do jogador.
-                    cout << "Rodada do(a) " << nome1 << endl;
+                    cout << "Rodada do(a) " << nome1 << "!" << endl;
                     escolhePosicao(linha,coluna,nome1);
                     imprimeTabuleiro(tabuleiro,linha,coluna,s1,nome1);
                     
                     if(verificaGanhador(tabuleiro,s1) == 1){
-                        cout << "Parabens " << nome1 << "!" << endl;
+                        cout << "Parabens " << nome1 << ",voce venceu!" << endl;
                         return 0;
                     }
-
-
-                }else{
-                    cout << "Rodada do(a) " << nome2 << endl;
+                }else{ //Define a vez do oponente
+                    cout << "Rodada do(a) " << nome2 << "!" << endl;
                     escolhePosicao(linha,coluna,nome2);
                     imprimeTabuleiro(tabuleiro,linha,coluna,s2,nome2);
-                    verificaGanhador(tabuleiro,s2);
+
                       if(verificaGanhador(tabuleiro,s2) == 1){
-                        cout << "Parabens " << nome2 << "!" << endl;
+                        cout << "Parabens " << nome2 << ",voce venceu!" << endl;
                         return 0;
                     }
-
                 }     
-            } 
+            }
             cout << "Empate!" << endl;
             return 0;
-
         break;
         }
 
