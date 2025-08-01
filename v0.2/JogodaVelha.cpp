@@ -2,6 +2,23 @@
 using namespace std;
 #define MAX 100 //Define o tamanho maximo do nome da cada jogador
 
+void bemVindo(){
+                cout << endl;
+            cout << "\033[38;2;255;255;0m====================================================\033[0m" << endl;
+            cout << "\033[38;2;0;120;255m          SEJA BEM VINDO AO JOGO DA VELHA!          \033[0m" << endl;
+            cout << "\033[38;2;255;255;0m====================================================\033[0m" << endl
+                 << endl;
+                                 cout << "                      COLUNA" << endl;
+            cout << "                     0   1   2" << endl;
+            cout << "                   -------------" << endl;
+            cout << "               L 0    |   |   |" << endl;
+            cout << "               I   -------------" << endl;
+            cout << "               N 1    |   |   |" << endl;
+            cout << "               H   -------------" << endl;
+            cout << "               A 2    |   |   |" << endl;
+            cout << "                   -------------" << endl
+                 << endl;
+}
 void tabuleiro(){
                 cout << "                      COLUNA" << endl;
             cout << "                     0   1   2" << endl;
@@ -64,7 +81,7 @@ void escolhePosicao(int &linha,int &coluna, char nome[]){
         }
     }
 }
-void imprimeTabuleiro(char tabuleiro[3][3],int linha, int coluna, int simb, char nome[]){
+void imprimeTabuleiro(char tabuleiro[3][3],int linha, int coluna, char simb, char nome[]){
     while(tabuleiro[linha][coluna] != '-'){ 
         cout << "Posicao invalida!" << endl;
         escolhePosicao(linha,coluna,nome);
@@ -91,6 +108,34 @@ bool verificaGanhador(char tabuleiro[3][3], char simb){
         return false;
     }
 }
+void escolhaNome_bot(char jogador[MAX]){
+    cout << endl;
+    cout << "Jogador digite seu nickname: ";
+    cin.ignore();
+    cin.getline(jogador,MAX);
+}
+void escolhaSimbolo_bot(char &s1, char &sBOT){
+    cout << "Jogador escolha seu simbolo ('X' ou 'O'): ";
+    cin >> s1;
+    while (s1 != 'X' && s1 != 'O'){
+        cout << "Simbolo invalido." << endl;
+        cout << "Jogador escolha seu simbolo novamente('X' ou 'O'): ";
+        cin >> s1;
+    }
+    cout << endl;
+    cout << "Simbolo '" << s1 << "' escolhido pelo jogador!" << endl;
+    if (s1 == 'X'){
+        sBOT = 'O';
+    }
+    else{
+        sBOT = 'X';
+    }
+    cout << "Simbolo '" << sBOT << "' escolhido automaticamente para o BOT!" << endl;      
+}
+void jogada_bot(char tabuleiro[3][3],int &linha, int &coluna, char sBOT, char sOponente, char bot[]){
+    
+}
+
 
 int main(){
     int opc;
@@ -123,13 +168,7 @@ int main(){
             char s1, s2; // s1 = simbolo 1, s2 = simbolo2
             char nome1[MAX], nome2[MAX]; //Nome do jogador e oponente respectivamente
 
-            cout << endl;
-            cout << "\033[38;2;255;255;0m====================================================\033[0m" << endl;
-            cout << "\033[38;2;0;120;255m          SEJA BEM VINDO AO JOGO DA VELHA!          \033[0m" << endl;
-            cout << "\033[38;2;255;255;0m====================================================\033[0m" << endl
-                 << endl;
-
-            tabuleiro();
+            bemVindo();
             escolhaSimbolo(s1, s2);
             escolhaNome(nome1, nome2);
             tabuleiro();
@@ -151,7 +190,7 @@ int main(){
                     cout << "Rodada do(a) " << nome2 << "!" << endl;
                     escolhePosicao(linha,coluna,nome2);
                     imprimeTabuleiro(tabuleiro,linha,coluna,s2,nome2);
-
+                    
                       if(verificaGanhador(tabuleiro,s2) == 1){
                         cout << "Parabens " << nome2 << ",voce venceu!" << endl;
                         return 0;
@@ -165,7 +204,37 @@ int main(){
 
         case 2:{// Jogador vs bot.
 
-            break;}
+            char s1,sBOT; //s1: simbolo do jogador, sBOT: simbolo do bot.
+            char jogador[MAX], bot[4] = "BOT"; //Nome do jogador e nome do bot.
+
+            bemVindo();
+            escolhaSimbolo_bot(s1,sBOT);
+            escolhaNome_bot(jogador);
+            tabuleiro();
+            int linha,coluna; //Declaração das variaveis que serão usadas como posição.
+            char tabuleiro[3][3] = {'-','-','-','-','-','-','-','-','-'}; //Inicilização do tabuleiro em uma matriz[3][3] com o char "-" em todos as posições.
+
+            for(int i=1;i<=9;i++){
+
+                if(i%2 != 0){//Define a vez do jogador.
+                    cout << "Rodada do(a) " << jogador << "!" << endl;
+                    escolhePosicao(linha,coluna,jogador);
+                    imprimeTabuleiro(tabuleiro,linha,coluna,s1,jogador);
+                }else{//Define a vez do BOT
+                    cout << "Rodada do " << bot << "!" << endl;
+                    jogada_bot(tabuleiro,linha,coluna,sBOT,s1,bot);
+                    cout << "O " << bot << " fez a jogada na posicao (" << linha << "," << coluna << ")." << endl;
+                    imprimeTabuleiro(tabuleiro,linha,coluna,sBOT,bot);
+                    if(verificaGanhador(tabuleiro,sBOT) == 1){
+                        cout << "Parabens " << bot << ",voce venceu!" << endl;
+                        return 0;
+                    }
+                }
+            }
+            cout << "Empate!" << endl;
+            return 0;
+        break;
+        }
 
         case 3:{
             cout << "Projeto desenvolvido por \033[38;2;255;0;0mDiego Gilberto Marques\033[0m e \033[38;2;255;0;0mArthur do Nascimento Rodrigues\033[0m." << endl;
