@@ -133,57 +133,52 @@ void escolhaSimbolo_bot(char &s1, char &sBOT){
     cout << "Simbolo '" << sBOT << "' escolhido automaticamente para o BOT!" << endl;      
 }
 void jogada_bot(char tabuleiro[3][3], int &linha, int &coluna, char sBOT, char sOponente, char bot[]) {
-    // Lógica do BOT invencível
-
-    // REGRA 1: Vencer o jogo
+    //  Primeiro passo -> Vencer o jogo
     // O bot verifica se ele pode vencer na próxima jogada.
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; i++) { //For utilizado para percorrer a matriz.
         for (int j = 0; j < 3; j++) {
             if (tabuleiro[i][j] == '-') { // Apenas checa posições vazias
                 tabuleiro[i][j] = sBOT; // Tenta jogar
-                if (verificaGanhador(tabuleiro, sBOT)) {
+                if (verificaGanhador(tabuleiro, sBOT) == true) {
                     tabuleiro[i][j] = '-'; // Desfaz a jogada (a função só decide, não joga)
-                    linha = i;
-                    coluna = j;
+                    linha = i; //Altera o valor da linha para a jogada decidida.
+                    coluna = j; //Altera o valor da coluna para a jogada decidida.
                     return; // Encontrou a melhor jogada, então sai da função
                 }
-                tabuleiro[i][j] = '-'; // Desfaz a tentativa
+                tabuleiro[i][j] = '-'; //Caso ele não encontre,desfaz a tentativa
             }
         }
     }
 
-    // REGRA 2: Bloquear o oponente
+    //  Segundo passo  -> Bloquear o oponente
     // O bot verifica se o oponente pode vencer na próxima jogada e o bloqueia.
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; i++) { //For utilizado para percorrer a matriz.
         for (int j = 0; j < 3; j++) {
             if (tabuleiro[i][j] == '-') {
                 tabuleiro[i][j] = sOponente; // Simula a jogada do oponente
-                if (verificaGanhador(tabuleiro, sOponente)) {
+                if (verificaGanhador(tabuleiro, sOponente) == true) {
                     tabuleiro[i][j] = '-'; // Desfaz a simulação
-                    linha = i;
-                    coluna = j;
+                    linha = i; //Altera o valor da linha para a jogada decidida.
+                    coluna = j; //Altera o valor da coluna para a jogada decidida.
                     return; // Encontrou a jogada de bloqueio, então sai
                 }
-                tabuleiro[i][j] = '-'; // Desfaz a simulação
+                tabuleiro[i][j] = '-'; //Caso não encontre, desfaz a simulação
             }
         }
     }
 
-    // A partir daqui, as regras são posicionais e não exigem simulação.
-    // As regras de "Garfo" (fork) são complexas de implementar com ifs simples,
-    // mas as regras a seguir (centro, canto oposto) são as melhores jogadas
-    // para criar ou evitar garfos na maioria das situações.
+    
 
-    // REGRA 3: Jogar no centro
-    // O centro (1,1) é a posição mais estratégica.
+    // Estrategia principal: Jogar no centro
+    // De acordo com estratégias pesquisadas sobre o jogo da velha, o centro é a melhor posição(1,1).
     if (tabuleiro[1][1] == '-') {
         linha = 1;
         coluna = 1;
         return;
     }
 
-    // REGRA 4: Jogar no canto oposto ao do oponente
-    // Neutraliza a estratégia do oponente de jogar nos cantos.
+    // Estrategias secundarias: Jogar no canto oposto ao do oponente
+    // Nós percebemos que ao jogar nos cantos, é eliminado uma grande possibilidade de derrota/empate.
     if (tabuleiro[0][0] == sOponente && tabuleiro[2][2] == '-') {
         linha = 2;
         coluna = 2;
@@ -205,7 +200,7 @@ void jogada_bot(char tabuleiro[3][3], int &linha, int &coluna, char sBOT, char s
         return;
     }
 
-    // REGRA 5: Jogar em um canto vazio
+    // Estrategia secundaria: Jogar em um canto vazio
     // Cantos são as segundas melhores posições depois do centro.
     if (tabuleiro[0][0] == '-') {
         linha = 0;
@@ -228,8 +223,8 @@ void jogada_bot(char tabuleiro[3][3], int &linha, int &coluna, char sBOT, char s
         return;
     }
 
-    // REGRA 6: Jogar em uma lateral vazia
-    // Último recurso, joga em qualquer espaço restante.
+    // Ultimo recurso: Jogar em uma lateral vazia
+    // Último recurso, joga em qualquer espaço restante para evitar derrota.
     if (tabuleiro[0][1] == '-') {
         linha = 0;
         coluna = 1;
@@ -298,7 +293,7 @@ int main(){
                     escolhePosicao(linha,coluna,nome1);
                     imprimeTabuleiro(tabuleiro,linha,coluna,s1,nome1);
                     
-                    if(verificaGanhador(tabuleiro,s1) == 1){
+                    if(verificaGanhador(tabuleiro,s1) == true){
                         cout << "Parabens " << nome1 << ",voce venceu!" << endl;
                         return 0;
                     }
@@ -307,7 +302,7 @@ int main(){
                     escolhePosicao(linha,coluna,nome2);
                     imprimeTabuleiro(tabuleiro,linha,coluna,s2,nome2);
                     
-                      if(verificaGanhador(tabuleiro,s2) == 1){
+                      if(verificaGanhador(tabuleiro,s2) == true){
                         cout << "Parabens " << nome2 << ",voce venceu!" << endl;
                         return 0;
                     }
@@ -341,7 +336,8 @@ int main(){
                     jogada_bot(tabuleiro,linha,coluna,sBOT,s1,bot);
                     cout << "O " << bot << " fez a jogada na posicao (" << linha << "," << coluna << ")." << endl;
                     imprimeTabuleiro(tabuleiro,linha,coluna,sBOT,bot);
-                    if(verificaGanhador(tabuleiro,sBOT) == 1){
+                    
+                    if(verificaGanhador(tabuleiro,sBOT) == true){
                         cout << "Parabens " << bot << ",voce venceu!" << endl;
                         return 0;
                     }

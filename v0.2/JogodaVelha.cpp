@@ -2,10 +2,30 @@
 using namespace std;
 #define MAX 100 //Define o tamanho maximo do nome da cada jogador
 
-void bemVindo(){
+void bemvindo_bot(){
+
                 cout << endl;
             cout << "\033[38;2;255;255;0m====================================================\033[0m" << endl;
             cout << "\033[38;2;0;120;255m          SEJA BEM VINDO AO JOGO DA VELHA!          \033[0m" << endl;
+            cout << "\033[38;2;0;120;255m              VERSAO: JOGADOR VS BOT                \033[0m" << endl;
+            cout << "\033[38;2;255;255;0m====================================================\033[0m" << endl
+                 << endl;
+                                 cout << "                      COLUNA" << endl;
+            cout << "                     0   1   2" << endl;
+            cout << "                   -------------" << endl;
+            cout << "               L 0    |   |   |" << endl;
+            cout << "               I   -------------" << endl;
+            cout << "               N 1    |   |   |" << endl;
+            cout << "               H   -------------" << endl;
+            cout << "               A 2    |   |   |" << endl;
+            cout << "                   -------------" << endl
+                 << endl;
+}
+void bemvindoNormal(){
+                cout << endl;
+            cout << "\033[38;2;255;255;0m====================================================\033[0m" << endl;
+            cout << "\033[38;2;0;120;255m          SEJA BEM VINDO AO JOGO DA VELHA!          \033[0m" << endl;
+            cout << "\033[38;2;0;120;255m              VERSAO: JOGADOR VS OPONENTE           \033[0m" << endl;
             cout << "\033[38;2;255;255;0m====================================================\033[0m" << endl
                  << endl;
                                  cout << "                      COLUNA" << endl;
@@ -133,7 +153,118 @@ void escolhaSimbolo_bot(char &s1, char &sBOT){
     cout << "Simbolo '" << sBOT << "' escolhido automaticamente para o BOT!" << endl;      
 }
 void jogada_bot(char tabuleiro[3][3],int &linha, int &coluna, char sBOT, char sOponente, char bot[]){
+ //  Primeiro passo -> Vencer o jogo
+    // O bot verifica se ele pode vencer na próxima jogada.
+    for (int i = 0; i < 3; i++) { //For utilizado para percorrer a matriz.
+        for (int j = 0; j < 3; j++) {
+            if (tabuleiro[i][j] == '-') { // Apenas checa posições vazias
+                tabuleiro[i][j] = sBOT; // Tenta jogar
+                if (verificaGanhador(tabuleiro, sBOT) == true) {
+                    tabuleiro[i][j] = '-'; // Desfaz a jogada (a função só decide, não joga)
+                    linha = i; //Altera o valor da linha para a jogada decidida.
+                    coluna = j; //Altera o valor da coluna para a jogada decidida.
+                    return; // Encontrou a melhor jogada, então sai da função
+                }
+                tabuleiro[i][j] = '-'; //Caso ele não encontre,desfaz a tentativa
+            }
+        }
+    }
+
+    //  Segundo passo  -> Bloquear o oponente
+    // O bot verifica se o oponente pode vencer na próxima jogada e o bloqueia.
+    for (int i = 0; i < 3; i++) { //For utilizado para percorrer a matriz.
+        for (int j = 0; j < 3; j++) {
+            if (tabuleiro[i][j] == '-') {
+                tabuleiro[i][j] = sOponente; // Simula a jogada do oponente
+                if (verificaGanhador(tabuleiro, sOponente) == true) {
+                    tabuleiro[i][j] = '-'; // Desfaz a simulação
+                    linha = i; //Altera o valor da linha para a jogada decidida.
+                    coluna = j; //Altera o valor da coluna para a jogada decidida.
+                    return; // Encontrou a jogada de bloqueio, então sai
+                }
+                tabuleiro[i][j] = '-'; //Caso não encontre, desfaz a simulação
+            }
+        }
+    }
+
     
+
+    // Estrategia principal: Jogar no centro
+    // De acordo com estratégias pesquisadas sobre o jogo da velha, o centro é a melhor posição(1,1).
+    if (tabuleiro[1][1] == '-') {
+        linha = 1;
+        coluna = 1;
+        return;
+    }
+
+    // Estrategias secundarias: Jogar no canto oposto ao do oponente
+    // Nós percebemos que ao jogar nos cantos, é eliminado uma grande possibilidade de derrota/empate.
+    if (tabuleiro[0][0] == sOponente && tabuleiro[2][2] == '-') {
+        linha = 2;
+        coluna = 2;
+        return;
+    }
+    if (tabuleiro[2][2] == sOponente && tabuleiro[0][0] == '-') {
+        linha = 0;
+        coluna = 0;
+        return;
+    }
+    if (tabuleiro[0][2] == sOponente && tabuleiro[2][0] == '-') {
+        linha = 2;
+        coluna = 0;
+        return;
+    }
+    if (tabuleiro[2][0] == sOponente && tabuleiro[0][2] == '-') {
+        linha = 0;
+        coluna = 2;
+        return;
+    }
+
+    // Estrategia secundaria: Jogar em um canto vazio
+    // Cantos são as segundas melhores posições depois do centro.
+    if (tabuleiro[0][0] == '-') {
+        linha = 0;
+        coluna = 0;
+        return;
+    }
+    if (tabuleiro[0][2] == '-') {
+        linha = 0;
+        coluna = 2;
+        return;
+    }
+    if (tabuleiro[2][0] == '-') {
+        linha = 2;
+        coluna = 0;
+        return;
+    }
+    if (tabuleiro[2][2] == '-') {
+        linha = 2;
+        coluna = 2;
+        return;
+    }
+
+    // Ultimo recurso: Jogar em uma lateral vazia
+    // Último recurso, joga em qualquer espaço restante para evitar derrota.
+    if (tabuleiro[0][1] == '-') {
+        linha = 0;
+        coluna = 1;
+        return;
+    }
+    if (tabuleiro[1][0] == '-') {
+        linha = 1;
+        coluna = 0;
+        return;
+    }
+    if (tabuleiro[1][2] == '-') {
+        linha = 1;
+        coluna = 2;
+        return;
+    }
+    if (tabuleiro[2][1] == '-') {
+        linha = 2;
+        coluna = 1;
+        return;
+    }    
 }
 
 
@@ -168,7 +299,7 @@ int main(){
             char s1, s2; // s1 = simbolo 1, s2 = simbolo2
             char nome1[MAX], nome2[MAX]; //Nome do jogador e oponente respectivamente
 
-            bemVindo();
+            bemvindoNormal();
             escolhaSimbolo(s1, s2);
             escolhaNome(nome1, nome2);
             tabuleiro();
@@ -207,7 +338,7 @@ int main(){
             char s1,sBOT; //s1: simbolo do jogador, sBOT: simbolo do bot.
             char jogador[MAX], bot[4] = "BOT"; //Nome do jogador e nome do bot.
 
-            bemVindo();
+            bemvindo_bot();
             escolhaSimbolo_bot(s1,sBOT);
             escolhaNome_bot(jogador);
             tabuleiro();
